@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Content Gap Analyzer - WordPress Admin</title>
+    <style>
+        /* WordPress Admin Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* WordPress admin wrap class */
+        .wrap {
+            margin: 10px 0 0 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            max-width: 1200px;
+        }
+        
+        .wrap h1 {
+            font-size: 23px;
+            font-weight: 400;
+            margin: 0 0 20px 0;
+            padding: 9px 0 4px 0;
+            color: #23282d;
+        }
+        
+        /* Plugin specific styles from style.css */
+        #sg-fetch { 
+            margin-top: 20px; 
+            padding: 10px; 
+            font-size: 16px;
+            background: #0073aa;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #sg-fetch:hover {
+            background: #005a87;
+        }
+        
+        #sg-fetch:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        #sg-topic-chart {
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background: #fafafa;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        
+        .plugin-description {
+            background: #e7f3ff;
+            border-left: 4px solid #0073aa;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 3px 3px 0;
+        }
+        
+        .plugin-description p {
+            margin: 0;
+            color: #0073aa;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h1>SEO Content Gap Analyzer</h1>
+        
+        <div class="plugin-description">
+            <p><strong>SEO Content Gap Analyzer v1.0</strong> - Identify competitor content & keyword gaps with recommendations and visuals.</p>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="sg-topic-chart" width="400" height="200"></canvas>
+        </div>
+        
+        <button id="sg-fetch">Analyze Now</button>
+        
+        <div id="loading" class="loading" style="display: none;">
+            Analyzing keyword gaps...
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Simulating jQuery functionality
+        document.getElementById('sg-fetch').addEventListener('click', function() {
+            const button = this;
+            const loading = document.getElementById('loading');
+            
+            // Disable button and show loading
+            button.disabled = true;
+            button.textContent = 'Analyzing...';
+            loading.style.display = 'block';
+            
+            // Simulate AJAX call delay
+            setTimeout(function() {
+                // Simulate the AJAX response data from your PHP
+                const responseData = {
+                    success: true,
+                    data: {
+                        topics: ['Topic A', 'Topic B'],
+                        gaps: [5, 3]
+                    }
+                };
+                
+                if (responseData.success) {
+                    const ctx = document.getElementById('sg-topic-chart').getContext('2d');
+                    
+                    // Destroy existing chart if it exists
+                    if (window.sgChart) {
+                        window.sgChart.destroy();
+                    }
+                    
+                    // Create new chart with the data from your plugin
+                    window.sgChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: responseData.data.topics,
+                            datasets: [{
+                                label: 'Keyword Gap',
+                                data: responseData.data.gaps,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Number of Gaps'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Content Topics'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'SEO Content Gap Analysis'
+                                },
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    alert('Error: ' + responseData.data);
+                }
+                
+                // Reset button state
+                button.disabled = false;
+                button.textContent = 'Analyze Now';
+                loading.style.display = 'none';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

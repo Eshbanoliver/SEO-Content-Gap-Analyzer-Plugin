@@ -3,8 +3,6 @@
 **WordPress Plugin**  
 Identify keyword & content opportunities your site is missing — compare against competitors, visualize topic clusters, and generate instant content briefs to close gaps and climb rankings faster.
 
-![Plugin Banner](https://via.placeholder.com/1200x600.png?text=SEO+Content+Gap+Analyzer)  
-*(Replace with your actual banner or screenshot collage)*
 
 ## Description
 
